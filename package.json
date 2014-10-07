@@ -1,0 +1,33 @@
+{
+  "name": "region-list",
+  "version": "0.0.1",
+  "description": "Region List",
+  "main": "js/app.js",
+  "dependencies": {
+    "react": "~0.11.0",
+    "express": "~3.0.3",
+    "request": "*",
+    "ejs": "*"
+  },
+  "devDependencies": {
+    "browserify": "~4.2.2",
+    "envify": "~2.0.1",
+    "jest-cli": "~0.1.17",
+    "reactify": "~0.14.0",
+    "watchify": "~0.10.2"
+  },
+  "scripts": {
+    "start": "watchify js/app.js -o js/bundle.js -v -d .",
+    "test": "jest",
+    "run": "node server.js"
+  },
+  "author": "Adam Pickeral",
+  "browserify": {
+    "transform": [
+      "reactify"
+    ]
+  },
+  "jest": {
+    "rootDir": "./js"
+  }
+}
