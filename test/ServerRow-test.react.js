@@ -1,7 +1,5 @@
 /** @jsx React.DOM */
 
-// jest.dontMock('../ServerRow.react.js');
-// jest.dontMock('../ServerStatusCell.react.js');
 describe('ServerRow', function () {
   var React, TestUtils, ServerRow, serverRow, server, ServerStatusCell, TextCell;
 
@@ -11,7 +9,6 @@ describe('ServerRow', function () {
     TestUtils = React.addons.TestUtils;
     ServerStatusCell = require('../js/components/ServerStatusCell.react');
     TextCell = require('../js/components/TextCell.react');
-    // TestUtils.mockComponent(ServerStatusCell, 'statuscell');
 
     var server = {
       id: '1',
@@ -22,7 +19,7 @@ describe('ServerRow', function () {
     };
 
     serverRow = TestUtils.renderIntoDocument(
-        <ServerRow server={server} />
+      <ServerRow server={server} />
     );
   });
 
