@@ -2,7 +2,7 @@
 
 var React = require('react');
 
-var ServerStatusColumn = React.createClass({
+var ServerStatusCell = React.createClass({
   render: function () {
     var statusClass;
 
@@ -26,4 +26,4 @@ var ServerStatusColumn = React.createClass({
   }
 });
 
-module.exports = ServerStatusColumn;
+module.exports = ServerStatusCell;
