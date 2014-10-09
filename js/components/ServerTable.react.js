@@ -9,7 +9,7 @@ var ServerTable = React.createClass({
 
     serverRows = [];
     this.props.data.forEach(function (server) {
-      serverRows.push(<ServerRow server={server} />);
+      serverRows.push(<ServerRow key={server.id} server={server} />);
     }.bind(this));
 
     return (

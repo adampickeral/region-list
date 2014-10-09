@@ -1,47 +1,58 @@
 /** @jsx React.DOM */
+var React = require('react/addons');
+var TestUtils = React.addons.TestUtils;
 
 describe('ServerStatusCell', function () {
-  var React, ServerStatusCell, TestUtils;
+  var ServerStatusCell, statusCell;
 
   beforeEach(function () {
-    React = require('react/addons');
     ServerStatusCell = require('../js/components/ServerStatusCell.react');
-    TestUtils = React.addons.TestUtils;
   });
 
+  function hasComponentWithClass(cssClass) {
+    var cell;
+
+    cell = TestUtils.findRenderedDOMComponentWithTag(statusCell, 'td');
+    expect(cell.getDOMNode()).toHaveClass(cssClass);
+  };
+
   it('renders a status cell', function () {
-    var statusCell = TestUtils.renderIntoDocument(
-      <ServerStatusCell status="ACTIVE" />
+    statusCell = TestUtils.renderIntoDocument(
+      <table><tbody><tr>
+        <ServerStatusCell status="ACTIVE" />
+      </tr></tbody></table>
     );
 
-    var cell = TestUtils.findRenderedDOMComponentWithClass(statusCell, 'rs-table-status');
-    expect(cell).not.toBeNull();
+    hasComponentWithClass('rs-table-status');
   });
 
   it('adds the ok class for ACTIVE status', function () {
-    var statusCell = TestUtils.renderIntoDocument(
-      <ServerStatusCell status="ACTIVE" />
+    statusCell = TestUtils.renderIntoDocument(
+      <table><tbody><tr>
+        <ServerStatusCell status="ACTIVE" />
+      </tr></tbody></table>
     );
 
-    var cell = TestUtils.findRenderedDOMComponentWithClass(statusCell, 'rs-table-status-ok');
-    expect(cell).not.toBeNull();
+    hasComponentWithClass('rs-table-status-ok');
   });
 
   it('adds the error class for ERROR status', function () {
-    var statusCell = TestUtils.renderIntoDocument(
-      <ServerStatusCell status="ERROR" />
+    statusCell = TestUtils.renderIntoDocument(
+      <table><tbody><tr>
+        <ServerStatusCell status="ERROR" />
+      </tr></tbody></table>
     );
 
-    var cell = TestUtils.findRenderedDOMComponentWithClass(statusCell, 'rs-table-status-error');
-    expect(cell).not.toBeNull();
+    hasComponentWithClass('rs-table-status-error');
   });
 
   it('adds the unknown class for unknown status', function () {
-    var statusCell = TestUtils.renderIntoDocument(
-      <ServerStatusCell status="" />
+    statusCell = TestUtils.renderIntoDocument(
+      <table><tbody><tr>
+        <ServerStatusCell status="" />
+      </tr></tbody></table>
     );
 
-    var cell = TestUtils.findRenderedDOMComponentWithClass(statusCell, 'rs-table-status-unknown');
-    expect(cell).not.toBeNull();
+    hasComponentWithClass('rs-table-status-unknown');
   });
 });

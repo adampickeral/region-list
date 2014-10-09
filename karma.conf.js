@@ -4,6 +4,7 @@
 module.exports = function(config) {
   config.set({
     files: [
+      {pattern: 'test/jasmine-helpers.js', included: true, served: true},
       'test/**/*-test.react.js'
     ],
     frameworks: ['browserify', 'jasmine'],

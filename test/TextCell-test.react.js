@@ -14,18 +14,6 @@ describe('TextCell', function () {
     );
 
     textCell = TestUtils.findRenderedDOMComponentWithTag(table, 'td');
-
-    this.addMatchers({
-      toHaveClass: function (cssClass) {
-        this.message = function () {
-          return [
-            'Expected object ' + jasmine.pp(this.actual) + ' to have class "' + selector + '" had "' + this.actual.className + '"',
-            'Expected object ' + jasmine.pp(this.actual) + ' not to have class "' + selector + '" had "' + this.actual.className + '"'
-          ];
-        };
-        return this.actual.className.indexOf(cssClass) > -1;
-      }
-    });
   });
 
   it('renders a table cell', function () {
