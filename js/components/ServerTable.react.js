@@ -1,10 +1,17 @@
 /** @jsx React.DOM */
 
 var React = require('react');
-var ServerRows = require('./ServerRows.react');
+var ServerRow = require('./ServerRow.react');
 
 var ServerTable = React.createClass({
   render: function () {
+    var servers, serverRows;
+
+    serverRows = [];
+    this.props.data.forEach(function (server) {
+      serverRows.push(<ServerRow key={server.id} server={server} />);
+    }.bind(this));
+
     return (
       <table className="rs-list-table">
         <thead>
@@ -15,7 +22,9 @@ var ServerTable = React.createClass({
             <td>Region</td>
           </tr>
         </thead>
-        <ServerRows data={this.props.data} region={this.props.region} />
+        <tbody>
+          {serverRows}
+        </tbody>
       </table>
     );
   }
