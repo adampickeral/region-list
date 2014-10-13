@@ -68,11 +68,15 @@ app.get('/servers', function (req, res) {
   res.render('index.ejs');
 });
 
-function getRegionEndpoints(serviceCatalog, region) {
+app.get('/heat', function (req, res) {
+  res.render('index.ejs');
+});
+
+function getRegionEndpoints(serviceCatalog, productName, region) {
   var endpoints, computeRegions;
 
   computeRegions = serviceCatalog.filter(function (catalog) {
-    return catalog['name'] === 'cloudServersOpenStack';
+    return catalog['name'] === productName;
   });
   endpoints = [];
   computeRegions.forEach(function (computeRegion) {
@@ -89,14 +93,18 @@ function getRegionEndpoints(serviceCatalog, region) {
 };
 
 app.get('/compute-servers', function (req, res) {
-  var region, servers, finishRequest, requests;
+  var region, servers, finishRequest, requests, serverEndpoints;
 
   region = req.query.region;
 
   servers = [];
   requests = 0;
 
-  serverEndpoints = getRegionEndpoints(req.session.serviceCatalog, region);
+  serverEndpoints = getRegionEndpoints(
+    req.session.serviceCatalog,
+    'cloudServersOpenStack',
+    region
+  );
 
   finishRequest = function () {
     requests++;
@@ -126,6 +134,53 @@ app.get('/compute-servers', function (req, res) {
         server['region'] = endpoint['region'];
       });
       servers.push.apply(servers, serversResponse['servers']);
+      finishRequest();
+    }.bind(this));
+  }.bind(this));
+});
+
+app.get('/heat-stacks', function (req, res) {
+  var region, stacks, finishRequest, requests, stackEndpoints;
+
+  region = req.query.region;
+
+  stacks = [];
+  requests = 0;
+
+  stackEndpoints = getRegionEndpoints(
+    req.session.serviceCatalog,
+    'cloudOrchestration',
+    region
+  );
+
+  finishRequest = function () {
+    requests++;
+    if (requests === stackEndpoints.length) {
+      res.setHeader('Content-Type', 'application/json');
+      res.send(JSON.stringify(stacks));
+    }
+  };
+
+  stackEndpoints.forEach(function (endpoint) {
+    options = {
+      uri: endpoint['publicURL'] + '/stacks',
+      headers: {
+        'Accept': 'application/json',
+        'X-Auth-Token': req.session.token
+      }
+    };
+    request.get(options, function (error, response, body) {
+      var stacksResponse;
+      if (error) {
+        console.log(error);
+        console.log(body);
+        throw 'failed getting stacks';
+      }
+      stacksResponse = JSON.parse(body);
+      stacksResponse['stacks'].forEach(function (stack) {
+        stack['region'] = endpoint['region'];
+      });
+      stacks.push.apply(stacks, stacksResponse['stacks']);
       finishRequest();
     }.bind(this));
   }.bind(this));
