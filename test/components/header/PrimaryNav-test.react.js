@@ -7,14 +7,14 @@ var Link = Router.Link;
 var TestUtils = React.addons.TestUtils;
 
 describe('PrimaryNav', function () {
-  var PrimaryNav, primaryNav, fixture, ServersApp;
+  var PrimaryNav, primaryNav, fixture, ProductApp;
 
   beforeEach(function () {
     PrimaryNav = require('../../../js/components/header/PrimaryNav.react');
-    ServersApp = require('../../../js/components/servers/ServersApp.react');
+    ProductApp = require('../../../js/components/ProductApp.react');
     TestUtils.renderIntoDocument(
       <Routes>
-        <Route name="servers" handler={ServersApp} />
+        <Route name="servers" handler={ProductApp} />
       </Routes>
     );
     fixture = TestUtils.renderIntoDocument(
