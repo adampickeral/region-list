@@ -7,9 +7,9 @@ describe('Header', function () {
     PrimaryNavStub;
 
   beforeEach(function () {
-    Header = require('../js/components/Header.react');
-    UtilityNav = require('../js/components/UtilityNav.react');
-    PrimaryNav = require('../js/components/PrimaryNav.react');
+    Header = require('../../../js/components/header/Header.react');
+    UtilityNav = require('../../../js/components/header/UtilityNav.react');
+    PrimaryNav = require('../../../js/components/header/PrimaryNav.react');
 
     fixture = TestUtils.renderIntoDocument(
       <div>

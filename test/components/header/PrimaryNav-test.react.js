@@ -10,8 +10,8 @@ describe('PrimaryNav', function () {
   var PrimaryNav, primaryNav, fixture, ServersApp;
 
   beforeEach(function () {
-    PrimaryNav = require('../js/components/PrimaryNav.react');
-    ServersApp = require('../js/components/ServersApp.react');
+    PrimaryNav = require('../../../js/components/header/PrimaryNav.react');
+    ServersApp = require('../../../js/components/ServersApp.react');
     TestUtils.renderIntoDocument(
       <Routes>
         <Route name="servers" handler={ServersApp} />

@@ -6,7 +6,7 @@ describe('UtilityNav', function () {
   var UtilityNav, utilityNav, fixture;
 
   beforeEach(function () {
-    UtilityNav = require('../js/components/UtilityNav.react');
+    UtilityNav = require('../../../js/components/header/UtilityNav.react');
     fixture = TestUtils.renderIntoDocument(
       <div>
         <UtilityNav />

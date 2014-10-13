@@ -10,7 +10,7 @@ var ServersApp = require('./components/ServersApp.react');
 var ServerPage = require('./components/ServerPage.react');
 var OrchestrationApp = require('./components/OrchestrationApp.react');
 var StackListPage = require('./components/StackListPage.react');
-var Header = require('./components/Header.react');
+var Header = require('./components/header/Header.react');
 
 var App = React.createClass({
   render: function () {
