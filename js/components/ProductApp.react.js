@@ -2,7 +2,7 @@
 
 var React = require('react');
 
-var ServersApp = React.createClass({
+var ProductApp = React.createClass({
   render: function () {
     return (
       <div>
@@ -12,4 +12,4 @@ var ServersApp = React.createClass({
   }
 });
 
-module.exports = ServersApp;
+module.exports = ProductApp;
