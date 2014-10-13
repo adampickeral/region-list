@@ -52,7 +52,7 @@ app.post('/login', function (req, res) {
         req.session.id = responseBody['access']['token']['tenant']['id'];
         req.session.token = responseBody['access']['token']['id'];
         req.session.serviceCatalog = responseBody['access']['serviceCatalog'];
-        res.redirect('/list');  
+        res.redirect('/servers');  
       })
     } else {
       res.redirect('/?loginFailed=true');
@@ -64,7 +64,7 @@ app.get('/', function (req, res) {
   res.render('login.ejs');
 });
 
-app.get('/list', function (req, res) {
+app.get('/servers', function (req, res) {
   res.render('index.ejs');
 });
 
@@ -88,7 +88,7 @@ function getRegionEndpoints(serviceCatalog, region) {
   return endpoints;
 };
 
-app.get('/servers', function (req, res) {
+app.get('/compute-servers', function (req, res) {
   var region, servers, finishRequest, requests;
 
   region = req.query.region;

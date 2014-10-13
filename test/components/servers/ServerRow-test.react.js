@@ -8,9 +8,9 @@ describe('ServerRow', function () {
 
   beforeEach(function () {
 
-    ServerRow = require('../js/components/ServerRow.react');
-    ServerStatusCell = require('../js/components/ServerStatusCell.react');
-    TextCell = require('../js/components/TextCell.react');
+    ServerRow = require('../../../js/components/servers/ServerRow.react');
+    ServerStatusCell = require('../../../js/components/servers/ServerStatusCell.react');
+    TextCell = require('../../../js/components/TextCell.react');
 
     server = {
       id: '1',

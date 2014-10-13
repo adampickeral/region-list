@@ -1,10 +1,10 @@
 /** @jsx React.DOM */
 
 var React = require('react');
-var RegionDropdown = require('./RegionDropdown.react');
+var RegionDropdown = require('../RegionDropdown.react');
 var ServerTable = require('./ServerTable.react');
 
-var ServerPage = React.createClass({
+var ServerListPage = React.createClass({
   getInitialState: function () {
     return {
       data: [],
@@ -16,7 +16,6 @@ var ServerPage = React.createClass({
       url: this.props.url + '?region=' + region,
       dataType: 'json',
       success: function (data) {
-        console.log(data);
         this.setState({data: data, region: region});
       }.bind(this),
       error: function (xhr, status, err) {
@@ -41,4 +40,4 @@ var ServerPage = React.createClass({
   }
 });
 
-module.exports = ServerPage;
+module.exports = ServerListPage;

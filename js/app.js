@@ -1,9 +1,9 @@
 /** @jsx React.DOM */
 
 var React = require('react');
-var ServerPage = require('./components/ServerPage.react');
+var AppRoutes = require('./AppRoutes.react');
 
 React.renderComponent(
-  <ServerPage url="/servers" />,
-  document.getElementById('region-list')
+  AppRoutes,
+  document.getElementById('content')
 );

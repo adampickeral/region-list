@@ -7,8 +7,8 @@ describe('ServerTable', function () {
     server1, server2;
 
   beforeEach(function () {
-    ServerTable = require('../js/components/ServerTable.react');
-    ServerRow = require('../js/components/ServerRow.react');
+    ServerTable = require('../../../js/components/servers/ServerTable.react');
+    ServerRow = require('../../../js/components/servers/ServerRow.react');
 
     server1 = {id: 1};
     server2 = {id: 2};

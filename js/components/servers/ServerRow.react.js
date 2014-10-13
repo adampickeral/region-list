@@ -2,7 +2,7 @@
 
 var React = require('react');
 var ServerStatusCell = require('./ServerStatusCell.react')
-var TextCell = require('./TextCell.react')
+var TextCell = require('../TextCell.react')
 
 var ServerRow = React.createClass({
   render: function () {

@@ -6,7 +6,7 @@ describe('ServerStatusCell', function () {
   var ServerStatusCell, statusCell;
 
   beforeEach(function () {
-    ServerStatusCell = require('../js/components/ServerStatusCell.react');
+    ServerStatusCell = require('../../../js/components/servers/ServerStatusCell.react');
   });
 
   function hasComponentWithClass(cssClass) {
