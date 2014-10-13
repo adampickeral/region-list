@@ -16,7 +16,6 @@ var ServerPage = React.createClass({
       url: this.props.url + '?region=' + region,
       dataType: 'json',
       success: function (data) {
-        console.log(data);
         this.setState({data: data, region: region});
       }.bind(this),
       error: function (xhr, status, err) {

@@ -8,36 +8,15 @@ var DefaultRoute = Router.DefaultRoute;
 var Link = Router.Link;
 var ServersApp = require('./components/ServersApp.react');
 var ServerPage = require('./components/ServerPage.react');
-
-// React.renderComponent(
-//   <ServerPage url="/servers" />,
-//   document.getElementById('region-list')
-// );
+var OrchestrationApp = require('./components/OrchestrationApp.react');
+var StackListPage = require('./components/StackListPage.react');
+var Header = require('./components/Header.react');
 
 var App = React.createClass({
   render: function () {
     return (
       <div>
-        <div className="rs-nav-utility">
-          <div className="rs-container">
-            <ul className="rs-nav rs-pull-right">
-              <li className="rs-nav-item"><a className="rs-nav-link" href="#">Account: Username123</a></li>
-            </ul>
-          </div>
-        </div>
-        <div className="rs-nav-primary">
-          <div className="rs-container">
-            <div className="rs-nav-brand">
-              <a href="index.html"></a>
-            </div>
-            <ul className="rs-nav">
-              <li><Link to="servers">Servers</Link></li>
-              <li><a href="#">Link Two</a></li>
-              <li><a href="#">Link Three</a></li>
-              <li><a href="#">Link Four</a></li>
-            </ul>
-          </div>
-        </div>
+        <Header/>
         <div className="rs-body">
           <div className="rs-container">
             <div className="rs-main">
@@ -58,10 +37,16 @@ var App = React.createClass({
 var routes = (
   <Routes location="history">
     <Route name="app" path="/" handler={App}>
-      <Route name="servers" handler handler={ServersApp}>
-        <DefaultRoute url="/compute-servers" handler={ServerPage}/>
+
+      <Route name="servers" handler={ServersApp}>
+        <DefaultRoute url="/compute-servers" handler={ServerPage} />
       </Route>
-      <DefaultRoute handler={ServersApp}/>
+
+      <Route name="orchestration" path="heat" handler={OrchestrationApp}>
+        <DefaultRoute url="/heat-stacks" handler={StackListPage} />
+      </Route>
+
+      <DefaultRoute handler={ServersApp} />
     </Route>
   </Routes>
 );
