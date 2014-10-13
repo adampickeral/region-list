@@ -11,7 +11,7 @@ describe('PrimaryNav', function () {
 
   beforeEach(function () {
     PrimaryNav = require('../../../js/components/header/PrimaryNav.react');
-    ServersApp = require('../../../js/components/ServersApp.react');
+    ServersApp = require('../../../js/components/servers/ServersApp.react');
     TestUtils.renderIntoDocument(
       <Routes>
         <Route name="servers" handler={ServersApp} />

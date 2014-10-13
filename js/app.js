@@ -6,10 +6,10 @@ var Route = Router.Route;
 var Routes = Router.Routes;
 var DefaultRoute = Router.DefaultRoute;
 var Link = Router.Link;
-var ServersApp = require('./components/ServersApp.react');
-var ServerPage = require('./components/ServerPage.react');
-var OrchestrationApp = require('./components/OrchestrationApp.react');
-var StackListPage = require('./components/StackListPage.react');
+var ServersApp = require('./components/servers/ServersApp.react');
+var ServerListPage = require('./components/servers/ServerListPage.react');
+var OrchestrationApp = require('./components/orchestration/OrchestrationApp.react');
+var StackListPage = require('./components/orchestration/StackListPage.react');
 var Header = require('./components/header/Header.react');
 
 var App = React.createClass({
@@ -39,7 +39,7 @@ var routes = (
     <Route name="app" path="/" handler={App}>
 
       <Route name="servers" handler={ServersApp}>
-        <DefaultRoute url="/compute-servers" handler={ServerPage} />
+        <DefaultRoute url="/compute-servers" handler={ServerListPage} />
       </Route>
 
       <Route name="orchestration" path="heat" handler={OrchestrationApp}>

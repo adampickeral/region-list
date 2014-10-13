@@ -1,7 +1,7 @@
 /** @jsx React.DOM */
 
 var React = require('react');
-var RegionDropdown = require('./RegionDropdown.react');
+var RegionDropdown = require('../RegionDropdown.react');
 
 var StackListPage = React.createClass({
   getInitialState: function () {

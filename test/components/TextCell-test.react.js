@@ -6,7 +6,7 @@ describe('TextCell', function () {
   var TextCell, table, textCell;
 
   beforeEach(function () {
-    TextCell = require('../js/components/TextCell.react');
+    TextCell = require('../../js/components/TextCell.react');
     table = TestUtils.renderIntoDocument(
       <table><tbody><tr>
         <TextCell text="some text" />
