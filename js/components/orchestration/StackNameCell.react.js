@@ -9,7 +9,7 @@ var StackNameCell = React.createClass({
     var stack, stackUrl;
 
     stack = this.props.stack;
-    stackUrl = '/heat/p1/s1';
+    stackUrl = '/heat/' + stack.region + '/' + stack.id;
     return (
       <td className="rs-table-text"><Link to={stackUrl}>{stack.stack_name}</Link></td>
     );

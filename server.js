@@ -186,6 +186,54 @@ app.get('/heat-stacks', function (req, res) {
   }.bind(this));
 });
 
+function getRegionEndpoint(serviceCatalog, productName, region) {
+  var computeRegions, regionEndpoint;
+
+  computeRegions = serviceCatalog.filter(function (catalog) {
+    return catalog['name'] === productName;
+  });
+
+  computeRegions[0]['endpoints'].forEach(function (endpoint) {
+    if (endpoint['region'] === region) {
+      regionEndpoint = endpoint;
+    }
+  });
+  return regionEndpoint;
+};
+
+app.get('/heat-stacks/:region/:stackId', function (req, res) {
+  var region, options, stackEndpoint;
+
+  region = req.params.region;
+  stackId = req.params.stackId;
+
+  stackEndpoint = getRegionEndpoint(
+    req.session.serviceCatalog,
+    'cloudOrchestration',
+    region
+  );
+
+  options = {
+    uri: stackEndpoint['publicURL'] + '/stacks/' + stackId,
+    headers: {
+      'Accept': 'application/json',
+      'X-Auth-Token': req.session.token
+    }
+  };
+  request.get(options, function (error, response, body) {
+    var stackResponse;
+    if (error) {
+      console.log(error);
+      console.log(body);
+      throw 'failed getting stacks';
+    }
+    stackResponse = JSON.parse(body);
+    stackResponse['stack']['region'] = stackEndpoint['region'];
+    res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify(stackResponse));
+  }.bind(this));
+});
+
 server = httpServer.createServer(app);
 server.listen(3000);
 console.log('Listening on port 3000');

@@ -21,7 +21,7 @@ var AppRoutes = (
       </Route>
 
       <Route name="orchestration" path="heat" handler={ProductApp}>
-        <Route name="stack-details" path="/heat/:providerId/:stackId" handler={StackDetailsPage} />
+        <Route name="stack-details" url="/heat-stacks" path="/heat/:region/:stackId" handler={StackDetailsPage} />
         <DefaultRoute url="/heat-stacks" handler={StackListPage} />
       </Route>
 
