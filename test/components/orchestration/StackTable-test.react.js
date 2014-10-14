@@ -1,23 +1,29 @@
 /** @jsx React.DOM */
 var React = require('react/addons');
 var TestUtils = React.addons.TestUtils;
+var Router = require('react-router');
+var DefaultRoute = Router.DefaultRoute;
+var Routes = Router.Routes;
+var Link = Router.Link;
 
 describe('StackTable', function () {
   var StackTable, StackRow, stackTable, table, stacks,
-    stack1, stack2;
+    stack1, stack2, component;
 
   beforeEach(function () {
-    StackTable = require('../../../js/components/orchestration/StackTable.react');
     StackRow = require('../../../js/components/orchestration/StackRow.react');
+    StackTable = require('../../../js/components/orchestration/StackTable.react');
 
     stack1 = {id: 1};
     stack2 = {id: 2};
     stacks = [stack1, stack2];
-    table = TestUtils.renderIntoDocument(
-      <StackTable data={stacks} />
+    component = TestUtils.renderIntoDocument(
+      <Routes location="none">
+        <DefaultRoute handler={StackTable} data={stacks} />
+      </Routes>
     );
 
-    stackTable = TestUtils.findRenderedDOMComponentWithTag(table, 'table');
+    stackTable = TestUtils.findRenderedDOMComponentWithTag(component, 'table');
   });
 
   describe('header', function () {
