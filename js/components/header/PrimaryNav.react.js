@@ -10,7 +10,7 @@ var PrimaryNav = React.createClass({
       <div className="rs-nav-primary">
         <div className="rs-container">
           <div className="rs-nav-brand">
-            <a href="index.html"></a>
+            <a href="/"></a>
           </div>
           <ul className="rs-nav">
             <li><Link to="servers">Servers</Link></li>

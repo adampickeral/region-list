@@ -2,6 +2,7 @@
 
 var React = require('react');
 var StackStatusCell = require('./StackStatusCell.react')
+var StackNameCell = require('./StackNameCell.react')
 var TextCell = require('../TextCell.react')
 
 var StackRow = React.createClass({
@@ -12,7 +13,7 @@ var StackRow = React.createClass({
     return (
       <tr key={stack.id}>
         <StackStatusCell status={stack.stack_status} />
-        <TextCell text={stack.stack_name} />
+        <StackNameCell stack={stack} />
         <TextCell text={stack.region} />
       </tr>
     );

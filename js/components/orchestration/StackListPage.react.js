@@ -31,7 +31,7 @@ var StackListPage = React.createClass({
   },
   render: function () {
     return (
-      <div>
+      <div className="rs-inner">
         <h2 className="rs-page-title">Stacks</h2>
         <RegionDropdown onRegionChange={this.handleRegionChange} />
         <StackTable data={this.state.data} />

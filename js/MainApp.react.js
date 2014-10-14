@@ -12,9 +12,7 @@ var MainApp = React.createClass({
           <div className="rs-container">
             <div className="rs-main">
               <div className="rs-content rs-panel">
-                <div className="rs-inner">
-                  <this.props.activeRouteHandler/>
-                </div>
+                <this.props.activeRouteHandler/>
               </div>
             </div>
           </div>

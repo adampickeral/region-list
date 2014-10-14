@@ -1,34 +1,47 @@
 /** @jsx React.DOM */
 var React = require('react/addons');
+var Router = require('react-router');
+var Routes = Router.Routes;
+var Route = Router.Route;
+var DefaultRoute = Router.DefaultRoute;
+var Link = Router.Link;
 var TestUtils = React.addons.TestUtils;
 
 describe('Header', function () {
-  var Header, header, fixture, UtilityNav, PrimaryNav,
-    PrimaryNavStub;
+  var Header, header, component, UtilityNav, PrimaryNav,
+    PrimaryNavStub, NavHandler;
 
   beforeEach(function () {
     Header = require('../../../js/components/header/Header.react');
     UtilityNav = require('../../../js/components/header/UtilityNav.react');
     PrimaryNav = require('../../../js/components/header/PrimaryNav.react');
 
-    fixture = TestUtils.renderIntoDocument(
-      <div>
-        <Header />
-      </div>
+    NavHandler = React.createClass({
+      render: function () {
+        return (
+          <div>
+            <Header />
+          </div>
+        );
+      }
+    });
+
+    component = TestUtils.renderIntoDocument(
+      <Routes location="none">
+        <Route name="servers" handler={Header} />
+        <Route name="orchestration" handler={Header} />
+        <DefaultRoute handler={Header} />
+      </Routes>
     );
 
-    header = TestUtils.findRenderedComponentWithType(fixture, Header);
+    header = TestUtils.findRenderedComponentWithType(component, Header);
   });
 
-  // TODO figure out how to stub out mock components.
-  // TestUtils.mockObject relies on Jest I believe
-  // Need to stub out PrimaryNav because of Link issue
+  it('renders utility nav', function () {
+    expect(TestUtils.findRenderedComponentWithType(header, UtilityNav)).not.toBeNull();
+  });
 
-  // it('renders utility nav', function () {
-  //   expect(TestUtils.findRenderedComponentWithType(header, UtilityNav)).not.toBeNull();
-  // });
-
-  // it('renders primary nav', function () {
-  //   expect(TestUtils.findRenderedComponentWithType(header, PrimaryNav)).not.toBeNull();
-  // });
+  it('renders primary nav', function () {
+    expect(TestUtils.findRenderedComponentWithType(header, PrimaryNav)).not.toBeNull();
+  });
 });
