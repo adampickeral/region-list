@@ -25,7 +25,7 @@ var StackDetailsPage = React.createClass({
     return (
       <div className="details-content">
         <DetailsHeader product="Cloud Stack" name={this.state.stack.stack_name} />
-        <DetailsSection stack={this.state.stack} />
+        <DetailsSection sectionTitle="Stack Details" stack={this.state.stack} />
       </div>
     );
   }

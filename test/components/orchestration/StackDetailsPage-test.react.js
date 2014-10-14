@@ -52,5 +52,6 @@ describe('StackDetailsPage', function () {
     detailsSection = TestUtils.findRenderedComponentWithType(detailsPage, DetailsSection);
 
     expect(detailsSection.props.stack).toBe(stack);
+    expect(detailsSection.props.sectionTitle).toBe('Stack Details');
   });
 });
