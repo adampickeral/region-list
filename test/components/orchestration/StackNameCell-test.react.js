@@ -7,7 +7,7 @@ var Routes = Router.Routes;
 var Link = Router.Link;
 
 describe('StackNameCell', function () {
-  var StackNameCell, table, stackNameCell, stack;
+  var StackNameCell, table, stackNameCell, stack, component;
 
   beforeEach(function () {
     var TableHandler;

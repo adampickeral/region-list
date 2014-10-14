@@ -3,7 +3,8 @@ var React = require('react/addons');
 var TestUtils = React.addons.TestUtils;
 
 describe('StackDetailsPage', function () {
-  var StackDetailsPage, fixture, detailsPage, DetailsHeader, StackStore, stack;
+  var StackDetailsPage, fixture, detailsPage, DetailsHeader, StackStore,
+    stack, DetailsSection;
 
   beforeEach(function () {
     var params;
@@ -13,6 +14,7 @@ describe('StackDetailsPage', function () {
       stackId: 's1'
     };
     StackDetailsPage = require('../../../js/components/orchestration/StackDetailsPage.react');
+    DetailsSection = require('../../../js/components/orchestration/StackDetailsSection.react');
     DetailsHeader = require('../../../js/components/details/Header.react');
     StackStore = require('../../../js/stores/StackStore');
 
@@ -42,5 +44,13 @@ describe('StackDetailsPage', function () {
 
     expect(header.props.name).toBe('stack name');
     expect(header.props.product).toBe('Cloud Stack');
+  });
+
+  it('renders a details section', function () {
+    var detailsSection;
+
+    detailsSection = TestUtils.findRenderedComponentWithType(detailsPage, DetailsSection);
+
+    expect(detailsSection.props.stack).toBe(stack);
   });
 });
