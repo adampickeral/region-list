@@ -37,7 +37,6 @@ describe('StackNameCell', function () {
   });
 
   it('renders a name text cell', function () {
-    console.log(stackNameCell);
     expect(stackNameCell.getDOMNode()).toHaveClass('rs-table-text');
   });
 

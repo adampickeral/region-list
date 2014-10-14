@@ -1,6 +1,8 @@
 /** @jsx React.DOM */
 
 var React = require('react');
+var DetailsHeader = require('../details/Header.react');
+var StackStore = require('../../stores/StackStore');
 
 var StackDetailsPage = React.createClass({
   getInitialState: function () {
@@ -13,27 +15,15 @@ var StackDetailsPage = React.createClass({
 
     stackId = this.props.params.stackId;
     region = this.props.params.region;
-    $.ajax({
-      url: this.props.url + '/' + region + '/' + stackId,
-      dataType: 'json',
-      success: function (data) {
-        this.setState({stack: data['stack']});
-      }.bind(this),
-      error: function (xhr, status, err) {
-        console.err(err.toString());
-      }.bind(this)
-    });
+    StackStore.getStack(this.props.url, region, stackId, this.setState.bind(this));
   },
   componentDidMount: function () {
     this.loadStack();
   },
   render: function () {
     return (
-      <div>
-        <div className="rs-detail-header">
-          <div className="rs-detail-header-subtitle">Cloud Stack</div>
-          <div className="rs-detail-header-title">{this.state.stack.stack_name}</div>
-        </div>
+      <div className="details-content">
+        <DetailsHeader product="Cloud Stack" name={this.state.stack.stack_name} />
         <div className="rs-detail-section">
           <div className="rs-detail-section-header">
             <div className="rs-detail-section-title">Stack Details</div>

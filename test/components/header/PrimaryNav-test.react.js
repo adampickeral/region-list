@@ -3,73 +3,75 @@ var React = require('react/addons');
 var Router = require('react-router');
 var Routes = Router.Routes;
 var Route = Router.Route;
+var DefaultRoute = Router.DefaultRoute;
 var Link = Router.Link;
 var TestUtils = React.addons.TestUtils;
 
 describe('PrimaryNav', function () {
-  var PrimaryNav, primaryNav, fixture, ProductApp;
+  var PrimaryNav, primaryNav, ProductApp, NavHandler;
 
   beforeEach(function () {
     PrimaryNav = require('../../../js/components/header/PrimaryNav.react');
     ProductApp = require('../../../js/components/ProductApp.react');
-    TestUtils.renderIntoDocument(
-      <Routes>
-        <Route name="servers" handler={ProductApp} />
+
+    NavHandler = React.createClass({
+      render: function () {
+        return (
+          <div>
+            <PrimaryNav />
+          </div>
+        );
+      }
+    });
+
+    component = TestUtils.renderIntoDocument(
+      <Routes location="none">
+        <Route name="servers" handler={NavHandler} />
+        <Route name="orchestration" handler={NavHandler} />
+        <DefaultRoute handler={NavHandler} />
       </Routes>
     );
-    fixture = TestUtils.renderIntoDocument(
-      <div>
-        <PrimaryNav />
-      </div>
-    );
 
-    primaryNav = TestUtils.findRenderedComponentWithType(fixture, PrimaryNav);
+    primaryNav = TestUtils.findRenderedComponentWithType(component, PrimaryNav);
   });
 
-  // TODO Link won't render without Routes rendered into the view, or something like that
+  it('adds rs-nav-primary class', function () {
+    expect(primaryNav.getDOMNode()).toHaveClass('rs-nav-primary');
+  });
 
-  // it('adds rs-nav-primary class', function () {
-  //   expect(primaryNav.getDOMNode()).toHaveClass('rs-nav-primary');
-  // });
+  it('adds rs-container element', function () {
+    expect(TestUtils.findRenderedDOMComponentWithClass(primaryNav, 'rs-container')).not.toBeNull();
+  });
 
-  // it('adds rs-container element', function () {
-  //   expect(TestUtils.findRenderedDOMComponentWithClass(primaryNav, 'rs-container')).not.toBeNull();
-  // });
+  it('adds brand link', function () {
+    var branding, brandingLink;
 
-  // it('adds brand link', function () {
-  //   var branding, brandingLink;
+    branding = TestUtils.findRenderedDOMComponentWithClass(primaryNav, 'rs-nav-brand');
+    brandingLink = TestUtils.findRenderedDOMComponentWithTag(branding, 'a');
 
-  //   branding = TestUtils.findRenderedDOMComponentWithClass(primaryNav, 'rs-nav-brand');
-  //   brandingLink = TestUtils.findRenderedDOMComponentWithTag(branding, 'a');
+    expect(brandingLink.props.href).toBe('/');
+  });
 
-  //   expect(a.props.href).toBe('index.html');
-  // });
+  describe('nav links', function () {
+    var navList, navLinks;
 
-  // it('adds rs-nav list', function () {
-  //   var navList;
+    beforeEach(function () {
+      navList = TestUtils.findRenderedDOMComponentWithTag(primaryNav, 'ul');
+      navLinks = TestUtils.scryRenderedComponentsWithType(navList, Link);
+    });
 
-  //   navList = TestUtils.findRenderedDOMComponentWithTag(primaryNav, 'ul');
+    it('adds rs-nav list', function () {
+      expect(navList.getDOMNode()).toHaveClass('rs-nav');
+    });
 
-  //   expect(navList.getDOMNode()).toHaveClass('rs-nav');
-  // });
+    it('adds a nav item with link to servers', function () {
+      expect(navLinks[0].props.to).toBe('servers');
+      expect(navLinks[0].getDOMNode().textContent).toBe('Servers');
+    });
 
-  // it('adds a nav item with link to servers', function () {
-  //   var navItem, navLink;
-
-  //   navItem = TestUtils.findRenderedDOMComponentWithTag(primaryNav, 'li');
-  //   navLink = TestUtils.findRenderedComponentWithType(navItem, Link);
-
-  //   expect(navLink.props.to).toBe('servers');
-  //   expect(navLink.getDOMNode().textContent).toBe('Servers');
-  // });
-
-  // it('adds a nav item with link to servers', function () {
-  //   var navItem, navLink;
-
-  //   navItem = TestUtils.findRenderedDOMComponentWithTag(primaryNav, 'li');
-  //   navLink = TestUtils.findRenderedComponentWithType(navItem, Link);
-
-  //   expect(navLink.props.to).toBe('servers');
-  //   expect(navLink.getDOMNode().textContent).toBe('Servers');
-  // });
+    it('adds a nav item with link to servers', function () {
+      expect(navLinks[1].props.to).toBe('orchestration');
+      expect(navLinks[1].getDOMNode().textContent).toBe('Orchestration');
+    });
+  });
 });

@@ -31,7 +31,7 @@ var ServerListPage = React.createClass({
   },
   render: function () {
     return (
-      <div>
+      <div className="rs-inner">
         <h2 className="rs-page-title">Cloud Servers</h2>
         <RegionDropdown onRegionChange={this.handleRegionChange} />
         <ServerTable data={this.state.data} region={this.state.region} />
