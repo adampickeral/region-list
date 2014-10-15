@@ -9,13 +9,7 @@ var MainApp = React.createClass({
       <div>
         <Header/>
         <div className="rs-body">
-          <div className="rs-container">
-            <div className="rs-main">
-              <div className="rs-content rs-panel">
-                <this.props.activeRouteHandler/>
-              </div>
-            </div>
-          </div>
+          <this.props.activeRouteHandler/>
         </div>
         <div className="rs-push"></div>
       </div>
