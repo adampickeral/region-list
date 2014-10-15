@@ -3,6 +3,7 @@
 var React = require('react');
 var RegionDropdown = require('../RegionDropdown.react');
 var ServerTable = require('./ServerTable.react');
+var ServerStore = require('../../stores/ServerStore');
 
 var ServerListPage = React.createClass({
   getInitialState: function () {
@@ -12,16 +13,7 @@ var ServerListPage = React.createClass({
     };
   },
   loadServers: function (region) {
-    $.ajax({
-      url: this.props.url + '?region=' + region,
-      dataType: 'json',
-      success: function (data) {
-        this.setState({data: data, region: region});
-      }.bind(this),
-      error: function (xhr, status, err) {
-        console.err(err.toString());
-      }.bind(this)
-    })
+    ServerStore.getServers(this.props.url, region, this.setState.bind(this));
   },
   handleRegionChange: function (region) {
     this.loadServers(region);
