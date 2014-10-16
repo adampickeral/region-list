@@ -2,13 +2,18 @@
 var React = require('react/addons');
 var TestUtils = React.addons.TestUtils;
 
+var Details = require('../../../js/components/details/Details.react');
+var Section = Details.Section;
+var Header = Details.SectionHeader;
+var Body = Details.Body;
+var List = Details.List;
+var ListItem = Details.ListItem;
+
 describe('StackDetailsSection', function () {
   var StackDetailsSection, fixture, stack, detailsSection, output1;
 
   beforeEach(function () {
     StackDetailsSection = require('../../../js/components/orchestration/StackDetailsSection.react');
-    DetailsList = require('../../../js/components/details/DetailsList.react');
-    DetailsListItem = require('../../../js/components/details/DetailsListItem.react');
 
     output1 = {
       output_key: 'the-key',
@@ -33,25 +38,23 @@ describe('StackDetailsSection', function () {
   });
 
   it('renders a section header', function () {
-    var header, sectionTitle;
+    var header;
 
-    header = TestUtils.findRenderedDOMComponentWithClass(detailsSection, 'rs-detail-section-header');
-    sectionTitle = TestUtils.findRenderedDOMComponentWithClass(header, 'rs-detail-section-title');
-
-    expect(sectionTitle.getDOMNode().textContent).toBe('Section Title');
+    header = TestUtils.findRenderedComponentWithType(detailsSection, Header);
+    expect(header.props.children).toBe('Section Title');
   });
 
-  it('renders the section', function () {
-    expect(detailsSection.getDOMNode()).toHaveClass('rs-detail-section');
+  it('renders a details section', function () {
+    expect(TestUtils.findRenderedComponentWithType(detailsSection, Section)).not.toBeNull();
   });
 
   describe('details list items', function () {
     var listItems, detailList, sectionBody;
 
     beforeEach(function () {
-      sectionBody = TestUtils.findRenderedDOMComponentWithClass(detailsSection, 'rs-detail-section-body');
-      detailList = TestUtils.findRenderedComponentWithType(sectionBody, DetailsList);
-      listItems = TestUtils.scryRenderedComponentsWithType(detailList, DetailsListItem);
+      sectionBody = TestUtils.findRenderedComponentWithType(detailsSection, Body);
+      detailList = TestUtils.findRenderedComponentWithType(sectionBody, List);
+      listItems = TestUtils.scryRenderedComponentsWithType(detailList, ListItem);
     });
 
     it('renders a region item', function () {

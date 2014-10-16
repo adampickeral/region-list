@@ -64,7 +64,6 @@ describe('AppRoutes', function () {
 
       beforeEach(function () {
         orchestrationRoute = mainRoute.props.children[1];
-        console.log(orchestrationRoute.props);
       });
 
       it('sets up a route for orchestration', function () {
