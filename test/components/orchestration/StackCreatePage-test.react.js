@@ -28,9 +28,12 @@ describe('StackCreatePage', function () {
   var StackCreatePage, createPage, viewContainer, component;
 
   beforeEach(function () {
-    var params;
+    var params, templates;
 
-    spyOn(TemplateStore, 'getTemplates');
+    templates = [ {id: 't1'}, {id: 't2'} ];
+    spyOn(TemplateStore, 'getTemplates').andCallFake(function () {
+      arguments[2]({templates: templates});
+    });
 
     StackCreatePage = require('../../../js/components/orchestration/StackCreatePage.react');
 
@@ -136,18 +139,20 @@ describe('StackCreatePage', function () {
               expect(select.getDOMNode()).toHaveClass('rs-input-large');
             });
 
+            function hasRegionOption(option, region, text) {
+              expect(option.getDOMNode().value).toBe(region);
+              expect(option.getDOMNode().textContent).toBe(text);
+            };
+
             it('renders regions as options', function () {
               var select, selectOptions;
 
               select = TestUtils.findRenderedDOMComponentWithTag(control, 'select');
               selectOptions = TestUtils.scryRenderedDOMComponentsWithTag(select, 'option');
 
-              expect(selectOptions[0].getDOMNode().value).toBe('IAD');
-              expect(selectOptions[0].getDOMNode().textContent).toBe('Northern VA (IAD)');
-              expect(selectOptions[1].getDOMNode().value).toBe('DFW');
-              expect(selectOptions[1].getDOMNode().textContent).toBe('Dallas (DFW)');
-              expect(selectOptions[2].getDOMNode().value).toBe('ORD');
-              expect(selectOptions[2].getDOMNode().textContent).toBe('Chicago (ORD)');
+              hasRegionOption(selectOptions[0], 'IAD', 'Northern VA (IAD)');
+              hasRegionOption(selectOptions[1], 'DFW', 'Dallas (DFW)');
+              hasRegionOption(selectOptions[2], 'ORD', 'Chicago (ORD)');
             });
 
             it('loads templates when the region changes', function () {
@@ -200,6 +205,22 @@ describe('StackCreatePage', function () {
               select = TestUtils.scryRenderedDOMComponentsWithTag(control, 'select')[0];
 
               expect(select.getDOMNode()).toHaveClass('rs-input-large');
+            });
+
+            function hasTemplateOption(option, templateId) {
+              expect(option.props.key).toBe(templateId);
+              expect(option.getDOMNode().value).toBe(templateId);
+              expect(option.getDOMNode().textContent).toBe(templateId);
+            };
+
+            it('renders templates as options', function () {
+              var select, selectOptions;
+
+              select = TestUtils.findRenderedDOMComponentWithTag(control, 'select');
+              selectOptions = TestUtils.scryRenderedDOMComponentsWithTag(select, 'option');
+
+              hasTemplateOption(selectOptions[0], 't1');
+              hasTemplateOption(selectOptions[1], 't2');
             });
           });
         });

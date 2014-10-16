@@ -43,6 +43,14 @@ var StackCreatePage = React.createClass({
     this.loadTemplates();
   },
   render: function () {
+    var templates;
+
+    templates = this.state.templates.map(function (template) {
+      return (
+        <option key={template.id} value={template.id}>{template.id}</option>
+      );
+    });
+
     return (
       <ViewContainer>
         <BackLink url="/heat">‹ Back to Stack List</BackLink>
@@ -76,6 +84,7 @@ var StackCreatePage = React.createClass({
                     <Label>Template</Label>
                     <Control>
                       <select ref="template" className="rs-input-large">
+                        {templates}
                       </select>
                     </Control>
                   </ControlGroup>
