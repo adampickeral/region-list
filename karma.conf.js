@@ -11,7 +11,8 @@ module.exports = function(config) {
     frameworks: ['browserify', 'jasmine'],
     preprocessors: {
       'test/**/*-test.react.js': ['browserify'],
-      'test/*-test.react.js': ['browserify']
+      'test/*-test.react.js': ['browserify'],
+      'test/jasmine-helpers.js': ['browserify']
     },
     browsers: ['Chrome'],
     reporters: ['spec', 'failed', 'junit'],

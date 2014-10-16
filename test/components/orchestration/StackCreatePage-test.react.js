@@ -1,6 +1,4 @@
 /** @jsx React.DOM */
-var React = require('react/addons');
-var TestUtils = React.addons.TestUtils;
 var Router = require('react-router');
 var DefaultRoute = Router.DefaultRoute;
 var Routes = Router.Routes;
@@ -16,7 +14,7 @@ var FormComponents = require('../../../js/components/form/Form.react');
 var ControlGroup = FormComponents.ControlGroup;
 var Label = FormComponents.Label;
 var TextInput = FormComponents.TextInput;
-var Dropdown = FormComponents.Dropdown;
+var Control = FormComponents.Control;
 
 var Details = require('../../../js/components/details/Details.react');
 var Section = Details.Section;
@@ -24,11 +22,15 @@ var SectionHeader = Details.SectionHeader;
 var Body = Details.Body;
 var BackLink = Details.BackLink;
 
+var TemplateStore = require('../../../js/stores/TemplateStore');
+
 describe('StackCreatePage', function () {
   var StackCreatePage, createPage, viewContainer, component;
 
   beforeEach(function () {
     var params;
+
+    spyOn(TemplateStore, 'getTemplates');
 
     StackCreatePage = require('../../../js/components/orchestration/StackCreatePage.react');
 
@@ -40,6 +42,10 @@ describe('StackCreatePage', function () {
 
     createPage = TestUtils.findRenderedComponentWithType(component, StackCreatePage);
     viewContainer = TestUtils.findRenderedComponentWithType(createPage, ViewContainer);
+  });
+
+  it('loads templates when component is rendered with initial region', function () {
+    expect(TemplateStore.getTemplates).toHaveBeenCalledWith('/stacks', 'IAD', jasmine.any(Function));
   });
 
   it('renders a back link', function () {
@@ -106,21 +112,95 @@ describe('StackCreatePage', function () {
             expect(TestUtils.findRenderedComponentWithType(nameControlGroup, TextInput)).not.toBeNull();
           });
 
-          it('renders a region control group', function () {
-            var regionControlGroup, regionLabel, dropdown, dropdownOptions;
+          describe('region field', function () {
+            var regionControlGroup, control;
 
-            regionControlGroup = TestUtils.scryRenderedComponentsWithType(body, ControlGroup)[1];
-            regionLabel = TestUtils.findRenderedComponentWithType(regionControlGroup, Label);
-            dropdown = TestUtils.findRenderedComponentWithType(regionControlGroup, Dropdown);
-            dropdownOptions = TestUtils.scryRenderedDOMComponentsWithTag(dropdown, 'option');
+            beforeEach(function () {
+              regionControlGroup = TestUtils.scryRenderedComponentsWithType(body, ControlGroup)[1];
+              control = TestUtils.findRenderedComponentWithType(regionControlGroup, Control);
+            });
 
-            expect(regionLabel.props.children).toBe('Region');
-            expect(dropdownOptions[0].getDOMNode().value).toBe('IAD');
-            expect(dropdownOptions[0].getDOMNode().textContent).toBe('Northern VA (IAD)');
-            expect(dropdownOptions[1].getDOMNode().value).toBe('DFW');
-            expect(dropdownOptions[1].getDOMNode().textContent).toBe('Dallas (DFW)');
-            expect(dropdownOptions[2].getDOMNode().value).toBe('ORD');
-            expect(dropdownOptions[2].getDOMNode().textContent).toBe('Chicago (ORD)');
+            it('renders a label', function () {
+              var regionLabel;
+              
+              regionLabel = TestUtils.findRenderedComponentWithType(regionControlGroup, Label);
+
+              expect(regionLabel.props.children).toBe('Region');
+            });
+
+            it('renders a select box', function () {
+              var select, selectOptions;
+
+              select = TestUtils.findRenderedDOMComponentWithTag(control, 'select');
+
+              expect(select.getDOMNode()).toHaveClass('rs-input-large');
+            });
+
+            it('renders regions as options', function () {
+              var select, selectOptions;
+
+              select = TestUtils.findRenderedDOMComponentWithTag(control, 'select');
+              selectOptions = TestUtils.scryRenderedDOMComponentsWithTag(select, 'option');
+
+              expect(selectOptions[0].getDOMNode().value).toBe('IAD');
+              expect(selectOptions[0].getDOMNode().textContent).toBe('Northern VA (IAD)');
+              expect(selectOptions[1].getDOMNode().value).toBe('DFW');
+              expect(selectOptions[1].getDOMNode().textContent).toBe('Dallas (DFW)');
+              expect(selectOptions[2].getDOMNode().value).toBe('ORD');
+              expect(selectOptions[2].getDOMNode().textContent).toBe('Chicago (ORD)');
+            });
+
+            it('loads templates when the region changes', function () {
+              var select, selectOptions;
+
+              createPage.setState({region: 'DFW'});
+              select = TestUtils.findRenderedDOMComponentWithTag(control, 'select');
+
+              TestUtils.Simulate.change(select.getDOMNode());
+
+              expect(TemplateStore.getTemplates).toHaveBeenCalledWith('/stacks', 'DFW', jasmine.any(Function));
+            });
+          });
+        });
+
+        describe('template section', function () {
+          var templateSection, body;
+
+          beforeEach(function () {
+            templateSection = sections[1];
+            body = TestUtils.findRenderedComponentWithType(templateSection, Body);
+          });
+
+          it('renders a section header', function () {
+            var sectionHeader;
+
+            sectionHeader = TestUtils.findRenderedComponentWithType(templateSection, SectionHeader);
+            expect(sectionHeader.props.children).toBe('Template');
+          });
+
+          describe('template field', function () {
+            var templateControlGroup, control;
+
+            beforeEach(function () {
+              templateControlGroup = TestUtils.scryRenderedComponentsWithType(body, ControlGroup)[0];
+              control = TestUtils.findRenderedComponentWithType(templateControlGroup, Control);
+            });
+
+            it('renders a label', function () {
+              var templateLabel;
+              
+              templateLabel = TestUtils.findRenderedComponentWithType(templateControlGroup, Label);
+
+              expect(templateLabel.props.children).toBe('Template');
+            });
+
+            it('renders a select box', function () {
+              var select, selectOptions;
+
+              select = TestUtils.scryRenderedDOMComponentsWithTag(control, 'select')[0];
+
+              expect(select.getDOMNode()).toHaveClass('rs-input-large');
+            });
           });
         });
       });
