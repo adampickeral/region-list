@@ -1,10 +1,14 @@
 /** @jsx React.DOM */
 var React = require('react/addons');
 var TestUtils = React.addons.TestUtils;
+var Router = require('react-router');
+var DefaultRoute = Router.DefaultRoute;
+var Routes = Router.Routes;
+var Link = Router.Link;
 
 describe('StackDetailsPage', function () {
   var StackDetailsPage, fixture, detailsPage, DetailsHeader, StackStore,
-    stack, DetailsSection;
+    stack, DetailsSection, viewContainer, component, BackLink, ViewContainer;
 
   beforeEach(function () {
     var params;
@@ -16,6 +20,8 @@ describe('StackDetailsPage', function () {
     StackDetailsPage = require('../../../js/components/orchestration/StackDetailsPage.react');
     DetailsSection = require('../../../js/components/orchestration/StackDetailsSection.react');
     DetailsHeader = require('../../../js/components/details/Header.react');
+    BackLink = require('../../../js/components/details/BackLink.react');
+    ViewContainer = require('../../../js/components/ViewContainer.react');
     StackStore = require('../../../js/stores/StackStore');
 
     stack = {
@@ -28,13 +34,23 @@ describe('StackDetailsPage', function () {
       arguments[3]({stack: stack});
     });
 
-    fixture = TestUtils.renderIntoDocument(
-      <div>
-        <StackDetailsPage url="/stacks" params={params} />
-      </div>
+    component = TestUtils.renderIntoDocument(
+      <Routes location="none">
+        <DefaultRoute handler={StackDetailsPage} url="/stacks" params={params} />
+      </Routes>
     );
 
-    detailsPage = TestUtils.findRenderedDOMComponentWithClass(fixture, 'details-content');
+    detailsPage = TestUtils.findRenderedComponentWithType(component, StackDetailsPage);
+    viewContainer = TestUtils.findRenderedComponentWithType(detailsPage, ViewContainer);
+  });
+
+  it('renders a back link', function () {
+    var backLink;
+
+    backLink = TestUtils.findRenderedComponentWithType(viewContainer, BackLink);
+
+    expect(backLink.props.url).toBe('/heat');
+    expect(backLink.props.children).toBe('‹ Back to Stack List');
   });
 
   it('renders a header', function () {

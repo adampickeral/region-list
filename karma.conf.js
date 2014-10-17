@@ -5,11 +5,14 @@ module.exports = function(config) {
   config.set({
     files: [
       {pattern: 'test/jasmine-helpers.js', included: true, served: true},
-      'test/**/*-test.react.js'
+      'test/**/*-test.react.js',
+      'test/*-test.react.js'
     ],
     frameworks: ['browserify', 'jasmine'],
     preprocessors: {
-      'test/**/*-test.react.js': ['browserify']
+      'test/**/*-test.react.js': ['browserify'],
+      'test/*-test.react.js': ['browserify'],
+      'test/jasmine-helpers.js': ['browserify']
     },
     browsers: ['Chrome'],
     reporters: ['spec', 'failed', 'junit'],

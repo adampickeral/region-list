@@ -186,6 +186,53 @@ app.get('/heat-stacks', function (req, res) {
   }.bind(this));
 });
 
+app.get('/heat-stacks/templates', function (req, res) {
+  var region, templates, finishRequest, requests, templateEndpoints;
+
+  region = req.query.region;
+
+  templates = [];
+  requests = 0;
+
+  templateEndpoints = getRegionEndpoints(
+    req.session.serviceCatalog,
+    'cloudOrchestration',
+    region
+  );
+
+  finishRequest = function () {
+    requests++;
+    if (requests === templateEndpoints.length) {
+      res.setHeader('Content-Type', 'application/json');
+      res.send(JSON.stringify(templates));
+    }
+  };
+
+  templateEndpoints.forEach(function (endpoint) {
+    options = {
+      uri: endpoint['publicURL'] + '/templates',
+      headers: {
+        'Accept': 'application/json',
+        'X-Auth-Token': req.session.token
+      }
+    };
+    request.get(options, function (error, response, body) {
+      var templatesResponse;
+      if (error) {
+        console.log(error);
+        console.log(body);
+        throw 'failed getting templates';
+      }
+      templatesResponse = JSON.parse(body);
+      templatesResponse['templates'].forEach(function (template) {
+        template['region'] = endpoint['region'];
+      });
+      templates.push.apply(templates, templatesResponse['templates']);
+      finishRequest();
+    }.bind(this));
+  }.bind(this));
+});
+
 function getRegionEndpoint(serviceCatalog, productName, region) {
   var computeRegions, regionEndpoint;
 

@@ -2,7 +2,10 @@
 
 var React = require('react');
 var RegionDropdown = require('../RegionDropdown.react');
+var ViewContainer = require('../ViewContainer.react');
 var StackTable = require('./StackTable.react');
+var Router = require('react-router');
+var Link = Router.Link;
 
 var StackListPage = React.createClass({
   getInitialState: function () {
@@ -31,11 +34,20 @@ var StackListPage = React.createClass({
   },
   render: function () {
     return (
-      <div className="rs-inner">
-        <h2 className="rs-page-title">Stacks</h2>
-        <RegionDropdown onRegionChange={this.handleRegionChange} />
-        <StackTable data={this.state.data} />
-      </div>
+      <ViewContainer>
+        <div className="rs-main">
+          <div className="rs-content rs-panel">
+            <div className="rs-inner">
+              <h2 className="rs-page-title">Stacks</h2>
+              <div className="rs-btn-group">
+                <Link to="/heat/create" className="rs-btn rs-btn-primary">Create Stack</Link>
+                <RegionDropdown onRegionChange={this.handleRegionChange} />
+              </div>
+              <StackTable data={this.state.data} />
+            </div>
+          </div>
+        </div>
+      </ViewContainer>
     );
   }
 });

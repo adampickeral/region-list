@@ -2,8 +2,12 @@
 
 var React = require('react');
 var Router = require('react-router');
-var DetailsList = require('../details/DetailsList.react');
-var DetailsListItem = require('../details/DetailsListItem.react');
+var Details = require('../details/Details.react');
+var Section = Details.Section;
+var Header = Details.SectionHeader;
+var Body = Details.Body;
+var List = Details.List;
+var ListItem = Details.ListItem;
 
 var StackDetailsSection = React.createClass({
   render: function () {
@@ -14,24 +18,22 @@ var StackDetailsSection = React.createClass({
     if (stack.outputs) {
       outputs = stack.outputs.map(function (output) {
         return (
-          <DetailsListItem key={output.output_key} label={output.description} value={output.output_value} />
+          <ListItem key={output.output_key} label={output.description} value={output.output_value} />
         );
       });
     }
 
     return (
-      <div className="rs-detail-section">
-        <div className="rs-detail-section-header">
-          <div className="rs-detail-section-title">{this.props.sectionTitle}</div>
-        </div>
-        <div className="rs-detail-section-body">
-          <DetailsList>
-            <DetailsListItem label="Region" value={stack.region} />
-            <DetailsListItem label="Stack ID" value={stack.id} />
+      <Section>
+        <Header>{this.props.sectionTitle}</Header>
+        <Body>
+          <List>
+            <ListItem label="Region" value={stack.region} />
+            <ListItem label="Stack ID" value={stack.id} />
             {outputs}
-          </DetailsList>
-        </div>
-      </div>
+          </List>
+        </Body>
+      </Section>
     );
   }
 });

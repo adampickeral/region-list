@@ -1,3 +1,6 @@
+React = require('react/addons');
+TestUtils = React.addons.TestUtils;
+
 beforeEach(function () {
   this.addMatchers({
     toHaveClass: function (cssClass) {
