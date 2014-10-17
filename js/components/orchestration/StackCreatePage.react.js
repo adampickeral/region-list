@@ -7,89 +7,73 @@ var Create = require('../create/Create.react');
 var Form = Create.Form;
 var FormHeader = Create.FormHeader;
 
-var FormComponents = require('../form/Form.react');
-var ControlGroup = FormComponents.ControlGroup;
-var Label = FormComponents.Label;
-var TextInput = FormComponents.TextInput;
-var Control = FormComponents.Control;
-
 var Details = require('../details/Details.react');
 var BackLink = Details.BackLink;
-var Section = Details.Section;
-var SectionHeader = Details.SectionHeader;
-var Body = Details.Body;
 
 var TemplateStore = require('../../stores/TemplateStore');
+var StackStore = require('../../stores/StackStore');
+
+var FooterSection = require('./FooterSection.react');
+var IdentitySection = require('./IdentitySection.react');
+var ParameterSection = require('./ParameterSection.react');
+var TemplateSection = require('./TemplateSection.react');
 
 var StackCreatePage = React.createClass({
   getInitialState: function () {
     return {
       templates: [],
-      region: 'IAD'
+      region: 'IAD',
+      selectedTemplate: ''
     };
   },
   loadTemplates: function () {
     var region;
 
-    region = this.refs.region.getDOMNode().value;
+    region = this.refs.identitySection.refs.region.getDOMNode().value;
     this.setState({region: region});
     TemplateStore.getTemplates(
       this.props.url,
-      this.refs.region.getDOMNode().value,
+      region,
       this.setState.bind(this)
+    );
+  },
+  onTemplateChange: function () {
+    var selectedTemplate;
+
+    selectedTemplate = this.refs.template.refs.template.getDOMNode().value;
+    this.setState({selectedTemplate: selectedTemplate});
+  },
+  onSubmit: function (e) {
+    e.preventDefault();
+    this.createStack();
+    return;
+  },
+  createStack: function () {
+    var templateId,
+
+    templateId = this.refs.template.refs.template.getDOMNode().value;
+    StackStore.create(
+      this.props.url,
+      templateId,
+      this.refs.identitySection.refs,
+      this.refs.parameterSection.refs
     );
   },
   componentDidMount: function () {
     this.loadTemplates();
   },
   render: function () {
-    var templates;
-
-    templates = this.state.templates.map(function (template) {
-      return (
-        <option key={template.id} value={template.id}>{template.id}</option>
-      );
-    });
-
     return (
       <ViewContainer>
         <BackLink url="/heat">‹ Back to Stack List</BackLink>
         <div className="rs-main">
           <div className="rs-content rs-panel">
-            <Form>
+            <Form onSubmit={this.onSubmit}>
               <FormHeader>Create Stack</FormHeader>
-              <Section>
-                <SectionHeader>Identity</SectionHeader>
-                <Body>
-                  <ControlGroup>
-                    <Label>Stack Name</Label>
-                    <TextInput />
-                  </ControlGroup>
-                  <ControlGroup>
-                    <Label>Region</Label>
-                    <Control>
-                      <select ref="region" value={this.state.region} onChange={this.loadTemplates} className="rs-input-large">
-                        <option value="IAD">Northern VA (IAD)</option>
-                        <option value="DFW">Dallas (DFW)</option>
-                        <option value="ORD">Chicago (ORD)</option>
-                      </select>
-                    </Control>
-                  </ControlGroup>
-                </Body>
-              </Section>
-              <Section>
-                <SectionHeader>Template</SectionHeader>
-                <Body>
-                  <ControlGroup>
-                    <Label>Template</Label>
-                    <Control>
-                      <select ref="template" className="rs-input-large">
-                        {templates}
-                      </select>
-                    </Control>
-                  </ControlGroup>
-                </Body>
-              </Section>
+              <IdentitySection ref="identitySection" callback={this.loadTemplates} region={this.state.region} />
+              <TemplateSection ref="template" templates={this.state.templates} callback={this.onTemplateChange} />
+              <ParameterSection ref="parameterSection" templates={this.state.templates} selectedTemplate={this.state.selectedTemplate} />
+              <FooterSection url="/heat" callback={this.onSubmit} />
             </Form>
           </div>
         </div>

@@ -1,6 +1,5 @@
 var TemplateStore = {
   getTemplates: function (url, region, callback) {
-    console.log(region);    
     $.ajax({
       url: url + '/templates' + '?region=' + region,
       dataType: 'json',

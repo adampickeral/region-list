@@ -4,8 +4,11 @@ var React = require('react');
 
 var DetailsSection = React.createClass({
   render: function () {
+    var className;
+
+    className = 'rs-detail-section ' + this.props.className;
     return (
-      <div className="rs-detail-section">
+      <div className={className}>
         {this.props.children}
       </div>
     );

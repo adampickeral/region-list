@@ -10,19 +10,14 @@ var Create = require('../../../js/components/create/Create.react');
 var Form = Create.Form;
 var FormHeader = Create.FormHeader;
 
-var FormComponents = require('../../../js/components/form/Form.react');
-var ControlGroup = FormComponents.ControlGroup;
-var Label = FormComponents.Label;
-var TextInput = FormComponents.TextInput;
-var Control = FormComponents.Control;
-
 var Details = require('../../../js/components/details/Details.react');
-var Section = Details.Section;
-var SectionHeader = Details.SectionHeader;
-var Body = Details.Body;
 var BackLink = Details.BackLink;
 
 var TemplateStore = require('../../../js/stores/TemplateStore');
+
+var IdentitySection = require('../../../js/components/orchestration/IdentitySection.react');
+var ParameterSection = require('../../../js/components/orchestration/ParameterSection.react');
+var TemplateSection = require('../../../js/components/orchestration/TemplateSection.react');
 
 describe('StackCreatePage', function () {
   var StackCreatePage, createPage, viewContainer, component;
@@ -83,147 +78,30 @@ describe('StackCreatePage', function () {
         expect(formHeader.props.children).toBe('Create Stack');
       });
 
-      describe('sections', function () {
-        var sections;
+      it('renders a template section', function () {
+        var templateSection;
 
-        beforeEach(function () {
-          sections = TestUtils.scryRenderedComponentsWithType(form, Section);
-        });
+        templateSection = TestUtils.findRenderedComponentWithType(form, TemplateSection);
+        expect(templateSection.props.ref).toBe('template');
+        expect(templateSection.props.templates).toBe(createPage.state.templates);
+        expect(templateSection.props.callback).toBe(createPage.onTemplateChange);
+      });
 
-        describe('identity section', function () {
-          var identitySection, body;
+      it('renders an identity section', function () {
+        var identitySection;
 
-          beforeEach(function () {
-            identitySection = sections[0];
-            body = TestUtils.findRenderedComponentWithType(identitySection, Body);
-          });
+        identitySection = TestUtils.findRenderedComponentWithType(form, IdentitySection);
+        expect(identitySection.props.ref).toBe('identitySection');
+        expect(identitySection.props.region).toBe(createPage.state.region);
+        expect(identitySection.props.callback).toBe(createPage.loadTemplates);
+      });
 
-          it('renders a section header', function () {
-            var sectionHeader;
+      it('renders a parameter section', function () {
+        var parameterSection;
 
-            sectionHeader = TestUtils.findRenderedComponentWithType(identitySection, SectionHeader);
-            expect(sectionHeader.props.children).toBe('Identity');
-          });
-
-          it('renders a stack name control group', function () {
-            var nameControlGroup, nameLabel;
-
-            nameControlGroup = TestUtils.scryRenderedComponentsWithType(body, ControlGroup)[0];
-            nameLabel = TestUtils.findRenderedComponentWithType(nameControlGroup, Label);
-
-            expect(nameLabel.props.children).toBe('Stack Name');
-            expect(TestUtils.findRenderedComponentWithType(nameControlGroup, TextInput)).not.toBeNull();
-          });
-
-          describe('region field', function () {
-            var regionControlGroup, control;
-
-            beforeEach(function () {
-              regionControlGroup = TestUtils.scryRenderedComponentsWithType(body, ControlGroup)[1];
-              control = TestUtils.findRenderedComponentWithType(regionControlGroup, Control);
-            });
-
-            it('renders a label', function () {
-              var regionLabel;
-              
-              regionLabel = TestUtils.findRenderedComponentWithType(regionControlGroup, Label);
-
-              expect(regionLabel.props.children).toBe('Region');
-            });
-
-            it('renders a select box', function () {
-              var select, selectOptions;
-
-              select = TestUtils.findRenderedDOMComponentWithTag(control, 'select');
-
-              expect(select.getDOMNode()).toHaveClass('rs-input-large');
-            });
-
-            function hasRegionOption(option, region, text) {
-              expect(option.getDOMNode().value).toBe(region);
-              expect(option.getDOMNode().textContent).toBe(text);
-            };
-
-            it('renders regions as options', function () {
-              var select, selectOptions;
-
-              select = TestUtils.findRenderedDOMComponentWithTag(control, 'select');
-              selectOptions = TestUtils.scryRenderedDOMComponentsWithTag(select, 'option');
-
-              hasRegionOption(selectOptions[0], 'IAD', 'Northern VA (IAD)');
-              hasRegionOption(selectOptions[1], 'DFW', 'Dallas (DFW)');
-              hasRegionOption(selectOptions[2], 'ORD', 'Chicago (ORD)');
-            });
-
-            it('loads templates when the region changes', function () {
-              var select, selectOptions;
-
-              createPage.setState({region: 'DFW'});
-              select = TestUtils.findRenderedDOMComponentWithTag(control, 'select');
-
-              TestUtils.Simulate.change(select.getDOMNode());
-
-              expect(TemplateStore.getTemplates).toHaveBeenCalledWith('/stacks', 'DFW', jasmine.any(Function));
-            });
-          });
-        });
-
-        describe('template section', function () {
-          var templateSection, body;
-
-          beforeEach(function () {
-            templateSection = sections[1];
-            body = TestUtils.findRenderedComponentWithType(templateSection, Body);
-          });
-
-          it('renders a section header', function () {
-            var sectionHeader;
-
-            sectionHeader = TestUtils.findRenderedComponentWithType(templateSection, SectionHeader);
-            expect(sectionHeader.props.children).toBe('Template');
-          });
-
-          describe('template field', function () {
-            var templateControlGroup, control;
-
-            beforeEach(function () {
-              templateControlGroup = TestUtils.scryRenderedComponentsWithType(body, ControlGroup)[0];
-              control = TestUtils.findRenderedComponentWithType(templateControlGroup, Control);
-            });
-
-            it('renders a label', function () {
-              var templateLabel;
-              
-              templateLabel = TestUtils.findRenderedComponentWithType(templateControlGroup, Label);
-
-              expect(templateLabel.props.children).toBe('Template');
-            });
-
-            it('renders a select box', function () {
-              var select, selectOptions;
-
-              select = TestUtils.scryRenderedDOMComponentsWithTag(control, 'select')[0];
-
-              expect(select.getDOMNode()).toHaveClass('rs-input-large');
-            });
-
-            function hasTemplateOption(option, templateId) {
-              expect(option.props.key).toBe(templateId);
-              expect(option.getDOMNode().value).toBe(templateId);
-              expect(option.getDOMNode().textContent).toBe(templateId);
-            };
-
-            it('renders templates as options', function () {
-              var select, selectOptions;
-
-              select = TestUtils.findRenderedDOMComponentWithTag(control, 'select');
-              selectOptions = TestUtils.scryRenderedDOMComponentsWithTag(select, 'option');
-
-              hasTemplateOption(selectOptions[0], 't1');
-              hasTemplateOption(selectOptions[1], 't2');
-            });
-          });
-        });
+        parameterSection = TestUtils.findRenderedComponentWithType(form, ParameterSection);
+        expect(parameterSection.props.templates).toBe(createPage.state.templates);
+        expect(parameterSection.props.selectedTemplate).toBe(createPage.state.selectedTemplate);
       });
     });
   });
